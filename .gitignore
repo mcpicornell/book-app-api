@@ -1,0 +1,30 @@
+# byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
+# tests and coverage
+*.pytest_cache
+.coverage
+
+.idea
+# database & logs
+*.db
+*.sqlite3
+*.log
+
+# venv
+env
+.env
+venv
+
+# other
+.DS_Store
+
+!staticfiles/.gitkeep 
+.vscode/symbols.json
+
+api/static/assets/node_modules
+api/static/assets/yarn.lock
+api/static/assets/.temp
+core/staticfiles/
+
