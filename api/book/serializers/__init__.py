@@ -1,2 +1,2 @@
-from .book import BookSerializer
+from .book import BookListSerializer, BookDetailSerializer
 from .page import PageSerializer

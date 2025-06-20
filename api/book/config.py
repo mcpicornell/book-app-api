@@ -5,4 +5,4 @@ from django.apps import AppConfig
 
 class AuthConfig(AppConfig):
     name = 'api.book'
-    label = 'apps_book'
+    label = 'api_book'
