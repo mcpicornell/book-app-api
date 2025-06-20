@@ -1,72 +1,35 @@
-version: '3.8'
+
 services:
-  vpn-app:
-    ports:
-      - "5005:5005"
+  db:
+    image: mariadb:10.11
     restart: always
     environment:
-      - EMAIL_HOST=${EMAIL_HOST}
-      - EMAIL_PORT=${EMAIL_PORT}
-      - EMAIL_USE_TLS=${EMAIL_USE_TLS}
-      - EMAIL_USE_SSL=${EMAIL_USE_SSL}
-      - EMAIL_HOST_USER=${EMAIL_HOST_USER}
-      - EMAIL_HOST_PASSWORD=${EMAIL_HOST_PASSWORD}
-      - DEFAULT_FROM_EMAIL=${DEFAULT_FROM_EMAIL}
-      - FERNET_SECRET_KEY=${FERNET_SECRET_KEY}
-      - VPN_API=${VPN_API}
-      - SECRET_KEY=${SECRET_KEY}
-      - TELEGRAM_BOT_USERNAME=${TELEGRAM_BOT_USERNAME}
-      - SERVER=${SERVER}
-      - DJANGO_DEBUG=${DJANGO_DEBUG}
-      - DOMAIN=${DOMAIN}
-      - EMAIL_PAGE_DOMAIN=${EMAIL_PAGE_DOMAIN}
-      - CSRF_TRUSTED_ORIGINS=${CSRF_TRUSTED_ORIGINS}
-    build: .
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
-      - ./app:/app
-    networks:
-      - db_network
-      - web_network
-      - django_network
-#  nginx:
-#    restart: always
-#    image: "nginx:latest"
-#
-#    ports:
-#      - "8080:80"
-#      - "8444:443"
-#    volumes:
-#      - ./app/media/:/app/media/
-#      - ./app/staticfiles/:/app/staticfiles/
-#      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-#      - ./nginx/conf.d:/etc/nginx/conf.d:ro
-#      - ./certbot/www:/var/www/certbot:ro
-#      - ./certbot/conf:/etc/letsencrypt:ro
-#    networks:
-#      - web_network
-#    depends_on:
-#      - certbot
-#  certbot:
-#    image: certbot/certbot:latest
-#    container_name: certbot
-#    volumes:
-#      - ./certbot/www:/var/www/certbot
-#      - ./certbot/conf:/etc/letsencrypt
-#    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
-#
-#  certbot-init:
-#    image: certbot/certbot:latest
-#    container_name: certbot-init
-#    volumes:
-#      - ./certbot/www:/var/www/certbot
-#      - ./certbot/conf:/etc/letsencrypt
-#    entrypoint: "/bin/sh -c 'certbot certonly --webroot --webroot-path=/var/www/certbot --email ${EMAIL_ADMIN} --agree-tos --no-eff-email --force-renewal -d ${DOMAIN}'"
+      - mariadb_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
 
-networks:
-  django_network:
-    external: true
-  db_network:
-    driver: bridge
-  web_network:
-    driver: bridge
- 
+  web:
+    build: .
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8080"
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+
+volumes:
+  mariadb_data:

@@ -1,26 +1,26 @@
-FROM python:3.11
+FROM python:3.11-slim
 
-RUN apt-get update && apt-get install -y locales && \
-    locale-gen es_ES.UTF-8 && \
-    dpkg-reconfigure locales
 
-ENV LANG es_ES.UTF-8
-ENV LANGUAGE es_ES:es
-ENV LC_ALL es_ES.UTF-8
+RUN apt-get update && apt-get install -y \
+    postgresql-client \
+    libpq-dev \
+    build-essential \
+    libmariadb-dev-compat \
+    libmariadb-dev \
+    default-libmysqlclient-dev \
+    pkg-config \
+    gcc \
+    && rm -rf /var/lib/apt/lists/* \
 
 WORKDIR /app
 
+COPY requirements.txt .
+
+RUN pip install --upgrade pip && pip install -r requirements.txt
+
 COPY . .
 
-# set environment variables
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
+EXPOSE 8080
 
-# install python dependencies
-RUN pip install --upgrade pip
-RUN pip install --no-cache-dir -r requirements.txt
-RUN python manage.py collectstatic --noinput
-# gunicorn
-#CMD ["gunicorn", "--config", "gunicorn-cfg.py", "core.wsgi"]
-CMD ["python", "manage.py", "runserver", "0.0.0.0:5005"]
-
+# Comando por defecto
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8080"]
