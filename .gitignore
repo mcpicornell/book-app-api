@@ -27,5 +27,3 @@ api/static/assets/node_modules
 api/static/assets/yarn.lock
 api/static/assets/.temp
 core/staticfiles/
-api/authentication/migrations/*.py
-api/book/migrations/*.py
