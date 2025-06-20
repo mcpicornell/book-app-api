@@ -1,7 +1,12 @@
 from rest_framework import serializers
-from api.book.models import Page, Book
+from api.book.models import Page
 
 class PageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Page
-        fields = ['id', 'book', 'number', 'content']
+        exclude = ()
+
+class PageSimpleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Page
+        exclude = ('book',)
