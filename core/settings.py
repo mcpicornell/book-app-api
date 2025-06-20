@@ -27,10 +27,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework_simplejwt'
+    'rest_framework_simplejwt',
     'rest_framework',
     'drf_spectacular',
-    'api.authentication'
+    'api.authentication',
+    'api.book',
 ]
 
 MIDDLEWARE = [
@@ -58,7 +59,18 @@ DATABASES = {
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-    )
+    ),
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10,
+}
+
+SPECTACULAR_SETTINGS = {
+    'SCHEMA_PATH_PREFIX': '/api/v1',
+    'TITLE': 'Book App API',
+    'DESCRIPTION': 'An API for managing users, roles and books with RBAC control.',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
 }
 
 
