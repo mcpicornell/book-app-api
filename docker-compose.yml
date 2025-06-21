@@ -16,8 +16,13 @@ services:
   web:
     build: .
     command: >
-      sh -c "python manage.py migrate &&
-             python manage.py runserver 0.0.0.0:8080"
+          sh -c "
+            python manage.py migrate &&
+            python manage.py collectstatic --noinput &&
+            python manage.py seed_users &&
+            python manage.py seed_books &&
+            python manage.py runserver 0.0.0.0:8080
+          "
     volumes:
       - .:/app
     ports:
@@ -30,6 +35,9 @@ services:
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_HOST=${DB_HOST}
       - DB_PORT=${DB_PORT}
+      - DJANGO_SUPERUSER_USERNAME=${DJANGO_SUPERUSER_USERNAME}
+      - DJANGO_SUPERUSER_EMAIL=${DJANGO_SUPERUSER_EMAIL}
+      - DJANGO_SUPERUSER_PASSWORD=${DJANGO_SUPERUSER_PASSWORD}
 
 volumes:
   mariadb_data:
