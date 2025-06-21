@@ -27,3 +27,4 @@ api/static/assets/node_modules
 api/static/assets/yarn.lock
 api/static/assets/.temp
 core/staticfiles/
+core/settings_dev.py
