@@ -5,6 +5,8 @@ from django.urls import include
 from django.urls import path
 
 urlpatterns = [
-    path('auth/', include('api.authentication.urls'), name='authentication'),
+    # If we want an apps base route, it also can be auth/ or authentication/, it would
+    path('', include('api.authentication.urls'), name='authentication'),
+
     path('', include('api.book.urls'), name='book'),
 ]
