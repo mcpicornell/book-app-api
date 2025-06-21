@@ -55,6 +55,6 @@ http://localhost:8080
 |------------------|----------------------------|
 | `/admin/`        | Django Admin               |
 | `/api/v1/`       | API endpoints              |
-| `/schema/`       | OpenAPI schema (JSON)      |
+| `/schema/`       | OpenAPI schema     |
 | `/docs/swagger/` | Swagger UI documentation   |
 | `/docs/redoc/`   | ReDoc UI documentation     |
