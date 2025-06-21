@@ -72,17 +72,22 @@ my-domain.com -> [Your EC2 Public IP]
 
 ## 8. Access the Application
 Open your browser and go to:
-```
-http://my-domain.com
-```
-Available endpoints:
-- /admin/  
-- /api/v1/  
-- /docs/swagger/  
-- /docs/redoc/
+http://localhost:8080 or http://my-domain.com
+
+#### 📚 Available Routes
+
+| Path             | Description                |
+|------------------|----------------------------|
+| `/admin/`        | Django Admin               |
+| `/api/v1/`       | API endpoints              |
+| `/schema/`       | OpenAPI schema     |
+| `/docs/swagger/` | Swagger UI documentation   |
+| `/docs/redoc/`   | ReDoc UI documentation     |
 
 ## Optional: Configure HTTPS with Certbot
 ```bash
 sudo apt install certbot python3-certbot-nginx
 sudo certbot --nginx -d my-domain.com
 ```
+Then open your browser and go to:
+https://my-domain.com
