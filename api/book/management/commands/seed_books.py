@@ -66,7 +66,7 @@ class SeedBooksManager:
             else:
                 self.command.stdout.write(self.command.style.WARNING(f"Book already exists: {book['title']}"))
 
-            if not obj.pages:
+            if not Page.objects.filter(book_id=obj.id).exists():
                 self.create_pages(obj)
 
         self.command.stdout.write(self.command.style.SUCCESS("Database successfully populated."))
