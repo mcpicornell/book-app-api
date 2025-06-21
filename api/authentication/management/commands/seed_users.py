@@ -59,12 +59,13 @@ class SeedUsersManager:
                 defaults={"email": f"{role_name}@{role_name}.com"}
             )
             user.role = Role.objects.get(name=role_name)
-            user.save(update_fields=["role"])
             if created:
                 user.set_password(role_name)
+
                 self.command.stdout.write(
                     self.command.style.SUCCESS(f"User '{role_name}' created and assigned role '{role_name}'.")
                 )
+            user.save(update_fields=["password", "role"])
 
 
 class Command(BaseCommand):
